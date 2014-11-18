@@ -4,5 +4,5 @@
     <string name="app_name">Squeezer</string>
     <string name="hello_round">Hello Round World!</string>
     <string name="hello_square">Hello Square World!</string>
-
+    <string name="unknown_track">Onbekend nummer</string>
 </resources>

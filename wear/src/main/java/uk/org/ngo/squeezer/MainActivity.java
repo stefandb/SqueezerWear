@@ -73,8 +73,8 @@ public class MainActivity extends Activity implements
                 mbtnplay = (ImageButton) stub.findViewById(R.id.btnplay);
                 mbtnprevious = (ImageButton) stub.findViewById(R.id.btnprevious);
 
-                mTitle = (TextView) stub.findViewById(R.id.txttitle);
-                mArtist = (TextView) stub.findViewById(R.id.txtatrist);
+                mTitle = (TextView) stub.findViewById(R.id.trackname);
+                mArtist = (TextView) stub.findViewById(R.id.artistname);
 
                 mbtnprevious.setOnClickListener(new OnClickListener() {
                     @Override
@@ -201,12 +201,26 @@ public class MainActivity extends Activity implements
                 mArtist.setText(message.getString("artist"));
 
                 if(message.getString("status") == "play"){
-                    mbtnplay.setBackgroundResource(R.drawable.ic_action_pause);
+                    mbtnplay.setImageResource(R.drawable.ic_action_pause);
                     playstatus = 1;
                 }else{
-                    mbtnplay.setBackgroundResource(R.drawable.ic_action_play);
+                    mbtnplay.setImageResource(R.drawable.ic_action_pause);
                     playstatus = 0;
                 }
+
+                if(message.getBoolean("btnprevious")){
+                    mbtnprevious.setEnabled(true);
+                }else{
+                    mbtnprevious.setEnabled(false);
+                }
+
+                if(message.getBoolean("btnnext")){
+                    mbtnnext.setEnabled(true);
+                }else{
+                    mbtnnext.setEnabled(false);
+                }
+
+
 //                mTitle.setText(numberinfo.getString("title"));
             } catch (JSONException e) {
                 Log.d("wear:squeezer-error", e.toString());
@@ -289,9 +303,23 @@ public class MainActivity extends Activity implements
                         mbtnplay.setBackgroundResource(R.drawable.ic_action_pause);
                         playstatus = 1;
                     }else{
-                        mbtnplay.setBackgroundResource(R.drawable.ic_action_play);
+                        mbtnplay.setBackgroundResource(R.drawable.ic_action_pause);
                         playstatus = 0;
                     }
+
+                    if(text.getBoolean("btnprevious")){
+                        mbtnprevious.setEnabled(true);
+                    }else{
+                        mbtnprevious.setEnabled(false);
+                    }
+
+                    if(text.getBoolean("btnnext")){
+                        mbtnnext.setEnabled(true);
+                    }else{
+                        mbtnnext.setEnabled(false);
+                    }
+
+
 //                mTitle.setText(numberinfo.getString("title"));
                 } catch (JSONException e) {
                     e.printStackTrace();

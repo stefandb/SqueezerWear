@@ -101,6 +101,7 @@ import uk.org.ngo.squeezer.service.IServicePlayersCallback;
 import uk.org.ngo.squeezer.service.IServiceVolumeCallback;
 import uk.org.ngo.squeezer.service.ISqueezeService;
 import uk.org.ngo.squeezer.service.SqueezeService;
+import uk.org.ngo.squeezer.util.AsyncTask;
 import uk.org.ngo.squeezer.util.ImageCache.ImageCacheParams;
 import uk.org.ngo.squeezer.util.ImageFetcher;
 
@@ -300,6 +301,14 @@ public class NowPlayingFragment extends Fragment implements
     public void onStop() {
         if (null != googleClient && googleClient.isConnected()) {
             googleClient.disconnect();
+        }
+        super.onStop();
+    }
+
+    @Override
+    public void onStart() {
+        if (null != googleClient && !googleClient.isConnected()) {
+            googleClient.connect();
         }
         super.onStop();
     }
@@ -796,31 +805,30 @@ public class NowPlayingFragment extends Fragment implements
                 numberinfo.put("album", song.getAlbumName());
                 if(playStatus == PlayerState.PlayStatus.play && playStatus != null){
                     //pauze
-                    numberinfo.put("status","pause");
+                    numberinfo.put("status","play");
                 }else if(playStatus != PlayerState.PlayStatus.play && playStatus != null){
                     //play
-                    numberinfo.put("status","play");
+                    numberinfo.put("status","pause");
                 }else{
                     numberinfo.put("status","null");
                 }
 
-                if (song.isRemote()) {
-                    numberinfo.put("btnnext", false);
-                    numberinfo.put("btnprevious", false);
-                }else{
-                    numberinfo.put("btnnext", true);
-                    numberinfo.put("btnprevious", true);
-                }
-
+                numberinfo.put("btnnext", (song.isRemote()) ? false : true);
+                numberinfo.put("btnprevious", (song.isRemote()) ? false : true);
             } catch (JSONException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
+                Log.d("nowplaying:squeezer", e.toString());
+                Log.d("nowplaying:squeezer", e.getMessage());
             }
 
-            Log.d("mobile:squeezer", numberinfo.toString());
+//            shuffleButton.setEnabled(connected);
+//            repeatButton.setEnabled(connected);
+            Log.d("nowplaying:squeezer-json", numberinfo.toString());
 
             //Requires a new thread to avoid blocking the UI
             new SendToDataLayerThread(BluetoothService.DATA_CURRENT_SONG, numberinfo.toString()).start();
-
+//            new SendMesage(BluetoothService.DATA_CURRENT_SONG, numberinfo.toString()).execute();
+            Log.d("nowplaying:squeezer-", "na post");
         } else {
             albumText.setText("");
             trackText.setText("");
@@ -829,23 +837,25 @@ public class NowPlayingFragment extends Fragment implements
                 btnContextMenu.setVisibility(View.GONE);
             }
 
-
             JSONObject numberinfo = new JSONObject();
             try {
-                numberinfo.put("title", "");
-                numberinfo.put("artist", "");
-                numberinfo.put("album", "");
+                numberinfo.put("title", getText(R.string.disconnected_text));
+                numberinfo.put("artist", getText(R.string.disconnected_text));
+                numberinfo.put("album", getText(R.string.disconnected_text));
                 numberinfo.put("status","null");
                 numberinfo.put("btnnext", false);
                 numberinfo.put("btnprevious", false);
             } catch (JSONException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
+                Log.d("nowplaying:squeezer", e.toString());
+                Log.d("nowplaying:squeezer", e.getMessage());
             }
 
-            Log.d("mobile:squeezer", numberinfo.toString());
+            Log.d("nowplaying:squeezer-json", numberinfo.toString());
             //Requires a new thread to avoid blocking the UI
+//            new SendMesage(BluetoothService.DATA_CURRENT_SONG, numberinfo.toString()).execute();
             new SendToDataLayerThread(BluetoothService.DATA_CURRENT_SONG, numberinfo.toString()).start();
-
+            Log.d("nowplaying:squeezer-", "na post");
         }
         updateAlbumArt(song);
     }
@@ -1356,6 +1366,13 @@ public class NowPlayingFragment extends Fragment implements
         String path;
         String message;
 
+        @Override
+        public void start(){
+            Log.d("nowplaying:squeezer-test", "TEST");
+            super.start();
+//            run();
+        }
+
         // Constructor to send a message to the data layer
         SendToDataLayerThread(String p, String msg) {
             path = p;
@@ -1364,19 +1381,49 @@ public class NowPlayingFragment extends Fragment implements
 
         public void run() {
             NodeApi.GetConnectedNodesResult nodes = Wearable.NodeApi.getConnectedNodes(googleClient).await();
-            Log.d("mobile:squeezer", nodes.getNodes().toString());
+            Log.d("nowplaying:squeezer-nodes", nodes.getNodes().toString());
             for (Node node : nodes.getNodes()) {
-                Log.d("mobile:squeezer-node", node.toString());
+                Log.d("nowplaying:squeezer-node", node.toString());
                 MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(googleClient, node.getId(), path, message.getBytes()).await();
 
                 if (result.getStatus().isSuccess()) {
-                    Log.d("mobile:squeezer-run", "Message: {" + message + "} sent to: " + node.getDisplayName());
+                    Log.d("nowplaying:squeezer-run", "Message: {" + message + "} sent to: " + node.getDisplayName());
                 }
                 else {
                     // Log an error
-                    Log.d("mobile:squeezer-run", "ERROR: failed to send Message");
+                    Log.d("nowplaying:squeezer-run", "ERROR: failed to send Message");
                 }
             }
+        }
+    }
+
+    private class SendMesage extends AsyncTask<String, Void, Void> {
+        String path;
+        String message;
+
+        SendMesage(String p, String msg) {
+            path = p;
+            message = msg;
+            Log.d("nowplaying:squeezer-start", "grgds");
+        }
+
+        @Override
+        protected Void doInBackground(String... params) {
+            NodeApi.GetConnectedNodesResult nodes = Wearable.NodeApi.getConnectedNodes(googleClient).await();
+            Log.d("nowplaying:squeezer-nodes", nodes.getNodes().toString());
+            for (Node node : nodes.getNodes()) {
+                Log.d("nowplaying:squeezer-node", node.toString());
+                MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(googleClient, node.getId(), path, message.getBytes()).await();
+
+                if (result.getStatus().isSuccess()) {
+                    Log.d("nowplaying:squeezer-run", "Message: {" + message + "} sent to: " + node.getDisplayName());
+                }
+                else {
+                    // Log an error
+                    Log.d("nowplaying:squeezer-run", "ERROR: failed to send Message");
+                }
+            }
+            return null;
         }
     }
 

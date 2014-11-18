@@ -66,17 +66,32 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="artiest"
-        android:id="@+id/txtatrist"
+        android:id="@+id/artistname"
         android:layout_above="@+id/btnplay"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:hint="@string/unknown_track"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:paddingLeft="4dp"
+        android:singleLine="true"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="titel nummer"
-        android:id="@+id/txttitle"
-        android:layout_above="@+id/txtatrist"
+        android:id="@+id/trackname"
+        android:layout_above="@+id/artistname"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="10dp"
+
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:hint="@string/unknown_track"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:paddingLeft="4dp"
+        android:singleLine="true"/>
 </RelativeLayout>
