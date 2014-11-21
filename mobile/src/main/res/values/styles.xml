@@ -6,6 +6,7 @@
         <!-- Customize your theme here. -->
     </style>
 
+
     <!-- Text Styles -->
     <style name="SqueezerTextItem" parent="@android:style/TextAppearance.Medium">
     </style>
