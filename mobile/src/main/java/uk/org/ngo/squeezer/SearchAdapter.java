@@ -40,11 +40,14 @@ import uk.org.ngo.squeezer.framework.PlaylistItem;
 import uk.org.ngo.squeezer.itemlist.AlbumView;
 import uk.org.ngo.squeezer.itemlist.ArtistView;
 import uk.org.ngo.squeezer.itemlist.GenreView;
+import uk.org.ngo.squeezer.itemlist.RadioView;
 import uk.org.ngo.squeezer.itemlist.SongView;
 import uk.org.ngo.squeezer.itemlist.SongViewWithArt;
 import uk.org.ngo.squeezer.model.Album;
 import uk.org.ngo.squeezer.model.Artist;
 import uk.org.ngo.squeezer.model.Genre;
+import uk.org.ngo.squeezer.model.Plugin;
+import uk.org.ngo.squeezer.model.Radio;
 import uk.org.ngo.squeezer.model.Song;
 import uk.org.ngo.squeezer.util.ImageFetcher;
 
@@ -70,6 +73,7 @@ public class SearchAdapter extends BaseExpandableListAdapter implements
                 new ItemAdapter<Album>(new AlbumView(activity), imageFetcher),
                 new ItemAdapter<Artist>(new ArtistView(activity)),
                 new ItemAdapter<Genre>(new GenreView(activity)),
+                new ItemAdapter<Plugin>(new RadioView(activity)),
         };
 
         ((SongViewWithArt) adapters[0].getItemView()).setDetails(EnumSet.of(
