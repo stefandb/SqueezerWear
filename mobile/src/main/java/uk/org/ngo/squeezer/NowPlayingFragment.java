@@ -754,6 +754,7 @@ public class NowPlayingFragment extends Fragment implements
                     playerState.getCurrentSongDuration());
             updateShuffleStatus(playerState.getShuffleStatus());
             updateRepeatStatus(playerState.getRepeatStatus());
+            Log.d("DEBUG 7", playerState.toString());
         }
     }
 
@@ -857,6 +858,7 @@ public class NowPlayingFragment extends Fragment implements
             new SendToDataLayerThread(BluetoothService.DATA_CURRENT_SONG, numberinfo.toString()).start();
             Log.d("nowplaying:squeezer-", "na post");
         }
+
         updateAlbumArt(song);
     }
 
@@ -880,7 +882,15 @@ public class NowPlayingFragment extends Fragment implements
             return;
         }
 
-        mImageFetcher.loadImage(song.getArtworkUrl(mService), albumArt);
+        String path = song.getArtworkUrl(mService);
+        path = path.replace("%3A", ":");
+        path = path.replace("%2F", "/");
+        path = path.replace("imageproxy/", "");
+        path = path.replace("/image.jpg", "");
+        path = path.replace("/image.png", "");
+        Log.d("DEBUG 1", path);
+
+        mImageFetcher.loadImage(path, albumArt);
     }
 
     private boolean setSecondsElapsed(int seconds) {

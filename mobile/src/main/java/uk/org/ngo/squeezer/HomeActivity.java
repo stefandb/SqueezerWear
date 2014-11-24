@@ -17,6 +17,7 @@
 package uk.org.ngo.squeezer;
 
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -98,6 +99,10 @@ public class HomeActivity extends BaseActivity {
         listView = (ListView) findViewById(R.id.item_list);
 
         Squeezer.setContext(getApplicationContext());
+
+//        ActionBar actionBar =getActionBar();
+//        actionBar.setBackgroundDrawable(getResources().getDrawable(R.drawable.actiobar_color));
+
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         final SharedPreferences preferences = getSharedPreferences(Preferences.NAME, 0);

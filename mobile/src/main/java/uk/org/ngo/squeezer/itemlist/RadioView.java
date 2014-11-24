@@ -21,10 +21,15 @@ import android.view.View;
 
 import uk.org.ngo.squeezer.R;
 import uk.org.ngo.squeezer.framework.BaseListActivity;
+import uk.org.ngo.squeezer.framework.ItemListActivity;
 import uk.org.ngo.squeezer.framework.ItemView;
 import uk.org.ngo.squeezer.model.Plugin;
 
 public class RadioView extends PluginView {
+
+    public RadioView(ItemListActivity activity) {
+        super(activity);
+    }
 
     public RadioView(BaseListActivity<Plugin> activity) {
         super(activity);

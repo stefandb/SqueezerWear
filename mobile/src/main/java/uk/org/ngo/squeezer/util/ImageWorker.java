@@ -252,6 +252,7 @@ public abstract class ImageWorker {
          */
         @Override
         protected Bitmap doInBackground(Object... params) {
+            Log.d(TAG, params[0].toString());
             if (BuildConfig.DEBUG) {
                 Log.d(TAG, "doInBackground - starting work");
             }
