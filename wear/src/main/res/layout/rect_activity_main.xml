@@ -35,7 +35,8 @@
         android:layout_alignTop="@+id/btnplay"
         android:layout_marginRight="20dp"
         android:background="@android:color/transparent"
-        android:src="@drawable/ic_action_previous" />adb forward tcp:4444 localabstract:/adb-hub
+        android:src="@drawable/ic_action_previous"
+        android:alpha="128"/>
 
     <TextView
         android:layout_width="wrap_content"

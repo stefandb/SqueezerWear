@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme" parent="Base.V21.Theme.AppCompat.Light">
-        <!-- Customize your theme using Material Design here. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+
+        <item name="android:navigationBarColor">@color/primary_dark</item>
+
+        <item name="android:actionBarStyle">@style/ActionBar</item>
         <item name="android:windowActionBarOverlay">true</item>
+    </style>
+
+    <style name="ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/primary</item>
+        <item name="android:backgroundStacked">@color/primary_dark</item>
+        <item name="android:backgroundSplit">@color/accent</item>
     </style>
 
     <style name="Widget.ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
