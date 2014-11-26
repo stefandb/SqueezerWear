@@ -294,6 +294,9 @@ public abstract class BaseActivity extends ActionBarActivity implements HasUiThr
         if (mService == null || icon == null) {
             return null;
         }
+
+        icon = icon.startsWith("/") ? icon.substring(1) : icon;
+
         return mService.getIconUrl(icon);
     }
 

@@ -16,6 +16,7 @@
 
 package uk.org.ngo.squeezer.itemlist;
 
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -53,7 +54,14 @@ public class PluginItemView extends BaseItemView<PluginItem> {
 
         // If the item has an image, then fetch and display it
         if (item.getImage() != null) {
-            imageFetcher.loadImage(item.getImage(), viewHolder.icon);
+            String path = item.getImage();
+
+            path = path.replace("%3A", ":");
+            path = path.replace("%2F", "/");
+            path = path.replace("imageproxy/", "");
+            path = path.replace("/image.png", "");
+            Log.d("DEBUG LOG 1", path);
+            imageFetcher.loadImage(path, viewHolder.icon);
         } else {
             // Otherwise we will revert to some other icon. This is not an exact approach, more
             // like a best effort.
@@ -63,6 +71,7 @@ public class PluginItemView extends BaseItemView<PluginItem> {
                 if (mActivity.getPlugin().getIconResource() != 0) {
                     viewHolder.icon.setImageResource(mActivity.getPlugin().getIconResource());
                 } else {
+                    Log.d("DEBUG LOG 2", mActivity.getPlugin().getIcon().toString());
                     imageFetcher.loadImage(mActivity.getIconUrl(mActivity.getPlugin().getIcon()),
                             viewHolder.icon);
                 }

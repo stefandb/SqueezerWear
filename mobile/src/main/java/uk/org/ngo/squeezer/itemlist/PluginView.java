@@ -16,16 +16,24 @@
 
 package uk.org.ngo.squeezer.itemlist;
 
+import android.util.Log;
 import android.view.View;
 
 import java.util.EnumSet;
 
 import uk.org.ngo.squeezer.framework.BaseItemView;
 import uk.org.ngo.squeezer.framework.BaseListActivity;
+import uk.org.ngo.squeezer.framework.ItemListActivity;
 import uk.org.ngo.squeezer.model.Plugin;
 import uk.org.ngo.squeezer.util.ImageFetcher;
 
 public abstract class PluginView extends BaseItemView<Plugin> {
+
+    public PluginView(ItemListActivity activity) {
+        super(activity);
+
+        setViewParams(EnumSet.of(ViewParams.ICON));
+    }
 
     public PluginView(BaseListActivity<Plugin> activity) {
         super(activity);
